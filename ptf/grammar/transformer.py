@@ -13,7 +13,7 @@ class PtfTransformer(Transformer):
         return datetime.date.fromisoformat(toks[0])
 
     def tag_list(self, toks):
-        return {t[1:] for t in toks if t.type != "WS"}
+        return {t[1:] for t in toks}
 
     def activity_type(self, toks):
         return str(toks[0])
@@ -22,21 +22,18 @@ class PtfTransformer(Transformer):
         return str(toks[0])
 
     @v_args(inline=True)
-    def data_pair(self, k, _, v):
+    def data_pair(self, k, v):
         return (k, v)
 
     def data_pairs(self, toks):
-        return dict([t for t in toks if isinstance(t, tuple)])
+        return dict(toks)
 
     @v_args(inline=True)
     def statement_activity(
         self,
         activity_date,
-        _1,
         activity_type,
-        _2,
         tag_list,
-        _3,
         data_pairs,
     ):
         activity = ptf.data.Activity(
@@ -50,4 +47,4 @@ class PtfTransformer(Transformer):
         return activity
 
     def start(self, toks):
-        return [t for t in toks if not (hasattr(t, "type") and t.type == "WS")]
+        return toks
