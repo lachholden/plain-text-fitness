@@ -10,8 +10,8 @@
 // General definitions
 _IDENTIFIER_CHAR : LETTER | DIGIT | "-" | "_"
 _WS : WS
-_WS_NO_GAP : WS_INLINE | /(\r)?\n/
-_WS_NEW_LINE : WS* /(\r)?\n/ WS*
+_WS_NO_GAP : WS_INLINE | WS_INLINE? /(\r)?\n/ WS_INLINE?
+_WS_NEW_LINE : WS? /(\r)?\n/ WS?
 
 // Scalar values
 scalar_str : ESCAPED_STRING
