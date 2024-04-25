@@ -1,0 +1,38 @@
+%import common.INT
+%import common.DIGIT
+%import common.LETTER
+%import common.UCASE_LETTER
+%import common.LCASE_LETTER
+%import common.WS
+%import common.ESCAPED_STRING
+
+// General definitions
+_IDENTIFIER_CHAR : LETTER | DIGIT | "-" | "_"
+
+// Scalar values
+scalar_str : ESCAPED_STRING
+
+DATE : DIGIT~4 "-" DIGIT~2 "-" DIGIT~2
+scalar_date : DATE
+
+// Tagging
+_TAG_NAME : LETTER _IDENTIFIER_CHAR*
+TAG : "#" _TAG_NAME
+tag_list : TAG (WS TAG)*
+
+// Activity key-value data
+DATA_KEY : LCASE_LETTER _IDENTIFIER_CHAR*
+data_key : DATA_KEY
+?data_value : scalar_date | scalar_str
+data_pair : data_key WS data_value
+data_pairs : data_pair (WS data_pair)*
+
+// Activities
+ACTIVITY_TYPE : UCASE_LETTER _IDENTIFIER_CHAR*
+activity_type : ACTIVITY_TYPE
+
+// Statements
+statement_activity : scalar_date WS activity_type [WS tag_list] [WS data_pairs]
+
+// Document
+start : (statement_activity WS)* statement_activity?
