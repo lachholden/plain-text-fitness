@@ -3,7 +3,7 @@ from pathlib import Path
 
 import fitdecode
 
-from ptf.data import Range
+from ptf.data import Duration, Pace, Range
 
 
 class FitFileLoader:
@@ -18,8 +18,8 @@ class FitFileLoader:
                     and frame.name == "session"
                 ):
                     for field in frame.fields:
-                        if field.name == "total_elapsed_time":
-                            data["duration"] = datetime.timedelta(seconds=field.value)
+                        if field.name == "total_timer_time":
+                            data["duration"] = Duration(seconds=field.value)
                         elif field.name == "total_distance":
                             data["distance"] = field.value / 1000.0
                         elif field.name == "avg_heart_rate":
@@ -28,4 +28,5 @@ class FitFileLoader:
                             data["hr"].max_value = field.value
                         elif field.name == "avg_running_cadence":
                             data["cadence"] = field.value
+        data["pace"] = Pace(seconds=data["duration"].total_seconds() / data["distance"])
         return data, {}

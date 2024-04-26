@@ -1,7 +1,35 @@
 import datetime
 from dataclasses import dataclass, field
+from math import floor
 from pathlib import Path
 from typing import Any, Dict, Generic, Optional, TypeVar
+
+
+class Pace(datetime.timedelta):
+    """Represents a pace per some unit distance (i.e. typically time per km.)"""
+
+    def __repr__(self):
+        secs = floor(self.total_seconds())
+        micros = round((self.total_seconds() - secs) * 1e6)
+        mm = floor(secs / 60)
+        secs -= mm * 60
+        ss = floor(secs)
+        return f"{mm}'{ss:02d}.{micros}\""
+
+
+class Duration(datetime.timedelta):
+    def __repr__(self):
+        secs = floor(self.total_seconds())
+        micros = round((self.total_seconds() - secs) * 1e6)
+        hh = floor(secs / 60 / 60)
+        secs -= hh * 60 * 60
+        mm = floor(secs / 60)
+        secs -= mm * 60
+        ss = floor(secs)
+        if hh > 0:
+            return f"{hh}:{mm:02d}:{ss:02d}.{micros}"
+        else:
+            return f"{mm}:{ss:02d}.{micros}"
 
 
 @dataclass
@@ -28,3 +56,13 @@ class Range(Generic[T]):
     min_value: Optional[T] = None
     avg_value: Optional[T] = None
     max_value: Optional[T] = None
+
+    def __repr__(self):
+        string = ""
+        if self.min_value:
+            string += f"{repr(self.min_value)} < "
+        if self.avg_value:
+            string += repr(self.avg_value)
+        if self.max_value:
+            string += f" > {repr(self.max_value)}"
+        return string
