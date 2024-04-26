@@ -15,7 +15,7 @@ class Pace(datetime.timedelta):
         secs -= mm * 60
         ss = floor(secs)
         string = f"{mm}'{ss:02d}"
-        string += f"{micros}".lstrip("0") + '"'
+        string += f"{micros:.6f}".lstrip("0").rstrip("0") + '"'
         return string
 
 
@@ -32,7 +32,7 @@ class Duration(datetime.timedelta):
             string = f"{hh}:{mm:02d}:{ss:02d}"
         else:
             string = f"{mm}:{ss:02d}"
-        string += f"{micros}".lstrip("0")
+        string += f"{micros:.6f}".lstrip("0").rstrip("0")
         return string
 
 
