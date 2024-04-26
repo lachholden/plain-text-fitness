@@ -10,26 +10,30 @@ class Pace(datetime.timedelta):
 
     def __repr__(self):
         secs = floor(self.total_seconds())
-        micros = round((self.total_seconds() - secs) * 1e6)
+        micros = self.total_seconds() - secs
         mm = floor(secs / 60)
         secs -= mm * 60
         ss = floor(secs)
-        return f"{mm}'{ss:02d}.{micros}\""
+        string = f"{mm}'{ss:02d}"
+        string += f"{micros}".lstrip("0") + '"'
+        return string
 
 
 class Duration(datetime.timedelta):
     def __repr__(self):
         secs = floor(self.total_seconds())
-        micros = round((self.total_seconds() - secs) * 1e6)
+        micros = self.total_seconds() - secs
         hh = floor(secs / 60 / 60)
         secs -= hh * 60 * 60
         mm = floor(secs / 60)
         secs -= mm * 60
         ss = floor(secs)
         if hh > 0:
-            return f"{hh}:{mm:02d}:{ss:02d}.{micros}"
+            string = f"{hh}:{mm:02d}:{ss:02d}"
         else:
-            return f"{mm}:{ss:02d}.{micros}"
+            string = f"{mm}:{ss:02d}"
+        string += f"{micros}".lstrip("0")
+        return string
 
 
 @dataclass

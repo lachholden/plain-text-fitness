@@ -20,6 +20,8 @@ class FitFileLoader:
                     for field in frame.fields:
                         if field.name == "total_timer_time":
                             data["duration"] = Duration(seconds=field.value)
+                        elif field.name == "total_elapsed_time":
+                            data["elapsed"] = Duration(seconds=field.value)
                         elif field.name == "total_distance":
                             data["distance"] = field.value / 1000.0
                         elif field.name == "avg_heart_rate":
