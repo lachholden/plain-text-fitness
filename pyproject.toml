@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.10"
 fitdecode = "^0.10.0"
 lark = "^1.1.9"
+flask = "^3.0.3"
 
 
 [build-system]
