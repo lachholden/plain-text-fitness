@@ -1,39 +1,71 @@
 import datetime
 from dataclasses import dataclass, field
+from decimal import Decimal
 from math import floor
 from pathlib import Path
+from re import I
 from typing import Any, Dict, Generic, Optional, TypeVar
 
+MINS = "\u2032"
+SECS = "\u2033"
 
-class Pace(datetime.timedelta):
-    """Represents a pace per some unit distance (i.e. typically time per km.)"""
+
+class Pace:
+    """Represents a pace per some unit distance (i.e. typically time per km.)
+
+    Minimum resolution is seconds, and can support arbitrary fractional-second
+    resolution.
+
+    Stored as a Decimal quantity of seconds in self.seconds.
+    """
+
+    def __init__(self, seconds: Decimal):
+        self.seconds = Decimal(seconds)
+
+    def __str__(self):
+        mm = self.seconds // 60
+        ss = self.seconds - mm * 60
+        return f"{mm}{MINS}{ss:02f}{SECS}"
 
     def __repr__(self):
-        secs = floor(self.total_seconds())
-        micros = self.total_seconds() - secs
-        mm = floor(secs / 60)
-        secs -= mm * 60
-        ss = floor(secs)
-        string = f"{mm}'{ss:02d}"
-        string += f"{micros:.6f}".lstrip("0").rstrip("0") + '"'
-        return string
+        return f"Pace({str(self)})"
 
 
-class Duration(datetime.timedelta):
-    def __repr__(self):
-        secs = floor(self.total_seconds())
-        micros = self.total_seconds() - secs
-        hh = floor(secs / 60 / 60)
-        secs -= hh * 60 * 60
-        mm = floor(secs / 60)
-        secs -= mm * 60
-        ss = floor(secs)
+class Duration:
+    """Represents a duration of time.
+
+    Supports resolutions of minutes, seconds, and arbitrary fractional-second
+    resolutions.
+
+    For minute resolution, the number of minutes is stored as an int in self.minutes,
+    and self.seconds is None. (TODO currently unimplemented)
+
+    For second or sub-second resolution, the number of minutes is stored as an int in
+    self.minutes, and then *remaining* seconds and fractions thereof are stored as a
+    Decimal in self.seconds. Hence, 0 <= self.seconds < 60
+    """
+
+    def __init__(self, seconds: Decimal):
+        self.seconds = Decimal(seconds)
+        decimal_minutes = self.seconds // 60
+        self.seconds -= decimal_minutes * 60
+        self.minutes = int(decimal_minutes)
+
+    def total_seconds(self) -> Decimal:
+        return self.seconds + self.minutes * 60
+
+    def __str__(self):
+        hh = self.minutes // 60
+        mm = self.minutes - hh * 60
+        ss = self.seconds
+
         if hh > 0:
-            string = f"{hh}:{mm:02d}:{ss:02d}"
+            return f"{hh}:{mm:02d}:{ss:02f}"
         else:
-            string = f"{mm}:{ss:02d}"
-        string += f"{micros:.6f}".lstrip("0").rstrip("0")
-        return string
+            return f"{mm}:{ss:02f}"
+
+    def __repr__(self):
+        return f"Duration({str(self)})"
 
 
 @dataclass
