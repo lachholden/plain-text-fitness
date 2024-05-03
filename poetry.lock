@@ -73,6 +73,43 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "funcparserlib"
+version = "1.0.1"
+description = "Recursive descent parsing library based on functional combinators"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, !=3.6.*"
+files = [
+    {file = "funcparserlib-1.0.1-py2.py3-none-any.whl", hash = "sha256:95da15d3f0d00b9b6f4bf04005c708af3faa115f7b45692ace064ebe758c68e8"},
+    {file = "funcparserlib-1.0.1.tar.gz", hash = "sha256:a2c4a0d7942f7a0e7635c369d921066c8d4cae7f8b5bf7914466bec3c69837f4"},
+]
+
+[[package]]
+name = "hy"
+version = "0.28.0"
+description = "A Lisp dialect embedded in Python"
+optional = false
+python-versions = ">= 3.8, < 3.13"
+files = [
+    {file = "hy-0.28.0.tar.gz", hash = "sha256:ae202f0b5e9094489af2a41b2cee9e0f776d0572da69cb108db2935a7224e17a"},
+]
+
+[package.dependencies]
+funcparserlib = ">=1.0,<2.0"
+
+[[package]]
+name = "hyrule"
+version = "0.5.0"
+description = "A utility library for the Hy programming language"
+optional = false
+python-versions = "*"
+files = [
+    {file = "hyrule-0.5.0.tar.gz", hash = "sha256:223b876b1365ac3ae9ecfeba7befd01c70e1c12a09a777f6640fc102426b20be"},
+]
+
+[package.dependencies]
+hy = ">=0.28.0,<0.29"
+
+[[package]]
 name = "itsdangerous"
 version = "2.2.0"
 description = "Safely pass data to untrusted environments and back."
@@ -187,6 +224,17 @@ files = [
 ]
 
 [[package]]
+name = "toolz"
+version = "0.12.1"
+description = "List processing tools and functional utilities"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "toolz-0.12.1-py3-none-any.whl", hash = "sha256:d22731364c07d72eea0a0ad45bafb2c2937ab6fd38a3507bf55eae8744aa7d85"},
+    {file = "toolz-0.12.1.tar.gz", hash = "sha256:ecca342664893f177a13dac0e6b41cbd8ac25a358e5f215316d43e2100224f4d"},
+]
+
+[[package]]
 name = "werkzeug"
 version = "3.0.2"
 description = "The comprehensive WSGI web application library."
@@ -205,5 +253,5 @@ watchdog = ["watchdog (>=2.3)"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.10"
-content-hash = "b4200072cf796b02055ee29c43fa4abaf171d80600d49cac022861ee9eaf9839"
+python-versions = ">=3.10,<3.13"
+content-hash = "f5db8ecdd080a94d88960b1bba243773665142eda1b0afe3bc5e0c857d85e265"
