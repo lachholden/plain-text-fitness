@@ -26,15 +26,9 @@
     (cls (Decimal seconds)))
 
   (defn __str__ [self]
-    (let [mm
-          (math.floor (/ self.seconds 60))
-
-          ss
-          (.quantize (- self.seconds (* mm 60)) #D"1")
-
-          ff
-          (- self.seconds ss (* mm 60))]
-
+    (let [mm (math.floor (/ self.seconds 60))
+          ss (.quantize (- self.seconds (* mm 60)) #D"1")
+          ff (- self.seconds ss (* mm 60))]
       f"{mm}{MINS}{ss :02.0f}{(-> ff str (.lstrip "0"))}{SECS}")))
 
 
